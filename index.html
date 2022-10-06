@@ -8,7 +8,7 @@
 <body>
 <div id="all-content" style="display: none">
     <ul id="menu" class="header">
-        <li><a href="" id="about">About</a></li>
+        <li><a href="" id="about">LLL</a></li>
         <li><a href="" id="ex1">Persons</a></li>
         <li><a href="" id="ex2">Hobbies</a></li>
         <li><a href="" id="ex3">CityInfo</a></li>
@@ -18,8 +18,25 @@
         <!-- Exercise-1 -->
         <div id="person" style="display: none">
             <h3>Person</h3>
-            <p>Add your basic HTML for Exercise 1 here</p>
-            <ul id="jokes"></ul>
+           
+                    <h5>All Users</h5>
+                    <button id="fetchPersonsBtn">Refresh Users</button>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>firstName</th>
+                            <th>lastName</th>
+                            <th>email</th>
+                            <th>Address</th>
+                            <th>Phones</th>
+                            <th>Hobbies</th>
+                        </tr>
+                        </thead>
+                        <tbody id="allPersonRows"></tbody>
+                    </table>
+                </div>
+         
         </div>
 
         <!-- End of HTML for exercise-1 -->
@@ -88,7 +105,7 @@
 
         <!--End of all content -->
     </div>
-</div>
+
 <script type="module" src="main.js"></script>
 </body>
 </html>

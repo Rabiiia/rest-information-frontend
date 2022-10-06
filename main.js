@@ -1,4 +1,6 @@
 import "./style.css";
+import "./personFacade";
+import personFacade from "./personFacade";
 document.getElementById("all-content").style.display = "block";
 
 /*
@@ -10,6 +12,14 @@ document.getElementById("all-content").style.display = "block";
 /* JS For Exercise-2 below */
 
 /* JS For Exercise-3 below */
+
+personFacade.getAllPersons(); // loads all users right away
+
+document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
+//document.getElementById("getUserBtn").onclick = userFacade.getUser;
+//document.getElementById("addUserBtn").onclick = userFacade.addUser;
+//document.getElementById("editUserBtn").onclick = userFacade.editUser;
+//document.getElementById("deleteUserBtn").onclick = userFacade.deleteUser;
 
 /*
  If you do not understand the code below, don´t worry, it is not necessary for completing the exercises

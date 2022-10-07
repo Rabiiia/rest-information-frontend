@@ -1,3 +1,5 @@
+import "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+import * as bootstrap from 'bootstrap';
 import "./style.css";
 import "./personFacade";
 import personFacade from "./personFacade";
@@ -9,6 +11,7 @@ document.getElementById("all-content").style.display = "block";
 
 /* JS For Exercise-1 below */
 
+
 /* JS For Exercise-2 below */
 
 /* JS For Exercise-3 below */
@@ -18,12 +21,15 @@ personFacade.getAllPersons(); // loads all users right away
 document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
 //document.getElementById("getUserBtn").onclick = userFacade.getUser;
 //document.getElementById("addUserBtn").onclick = userFacade.addUser;
-//document.getElementById("editUserBtn").onclick = userFacade.editUser;
+
+//document.getElementById(`update-button-${person.id}`).onclick() = personFacade.updatePerson;
 //document.getElementById("deleteUserBtn").onclick = userFacade.deleteUser;
 
 /*
  If you do not understand the code below, don´t worry, it is not necessary for completing the exercises
 */
+
+
 
 function hideAllShowOne(idToShow) {
   document.getElementById("about_html").style = "display:none";
@@ -37,7 +43,7 @@ function menuItemClicked(evt) {
   const id = evt.target.id;
   switch (id) {
     case "ex1":
-      hideAllShowOne("ex1_html");
+      hideAllShowOne("person");
       break;
     case "ex2":
       hideAllShowOne("ex2_html");

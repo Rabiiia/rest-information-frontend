@@ -8,7 +8,7 @@
 <body>
 <div id="all-content" style="display: none">
     <ul id="menu" class="header">
-        <li><a href="" id="about">LLL</a></li>
+        <li><a href="" id="about">About</a></li>
         <li><a href="" id="ex1">Persons</a></li>
         <li><a href="" id="ex2">Hobbies</a></li>
         <li><a href="" id="ex3">CityInfo</a></li>
@@ -16,11 +16,12 @@
 
     <div class="content">
         <!-- Exercise-1 -->
-        <div id="person" style="display: none">
+        <div id="person" style="display: none" class="table table-stripped" >
             <h3>Person</h3>
+            <p>List of all persons</p>
            
-                    <h5>All Users</h5>
-                    <button id="fetchPersonsBtn">Refresh Users</button>
+                    <h5>All Persons</h5>
+                    <button id="fetchPersonsBtn">Refresh Persons</button>
                     <table class="table">
                         <thead>
                         <tr>
@@ -28,13 +29,43 @@
                             <th>firstName</th>
                             <th>lastName</th>
                             <th>email</th>
-                            <th>Address</th>
-                            <th>Phones</th>
-                            <th>Hobbies</th>
+                            <th>description</th>
+                            <th>number</th>
+                            <th>street</th>
+                            <th>zipcode</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>WikiLink</th>
+                            <th></th>
                         </tr>
                         </thead>
-                        <tbody id="allPersonRows"></tbody>
+                        <tbody id="allPersonRows">
+
+
+                        </tbody>
+                      
                     </table>
+
+                  
+
+                    <div id="editModal" class="modal" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Edit person</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Modal body text goes here.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 </div>
          
         </div>
@@ -105,7 +136,8 @@
 
         <!--End of all content -->
     </div>
-
+    >
 <script type="module" src="main.js"></script>
+
 </body>
 </html>

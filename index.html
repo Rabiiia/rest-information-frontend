@@ -15,14 +15,14 @@
     </ul>
 
     <div class="content">
-        <!-- Exercise-1 -->
+        <!-- List person -->
         <div id="person" style="display: none" class="table table-stripped" >
             <h3>Person</h3>
             <p>List of all persons</p>
            
                     <h5>All Persons</h5>
-                    <button id="fetchPersonsBtn">Refresh Persons</button>
-                    <table class="table">
+                    <!-- <button id="fetchPersonsBtn">Refresh Persons</button> -->
+                    <table class="table .table-responsive">
                         <thead>
                         <tr>
                             <th>Id</th>
@@ -38,36 +38,163 @@
                             <th>Type</th>
                             <th>WikiLink</th>
                             <th></th>
+
                         </tr>
                         </thead>
                         <tbody id="allPersonRows">
 
-
+                            
+                       
                         </tbody>
-                      
+                        
                     </table>
+                   <!----<td> <input id="editPersonBtn" type="button" value="Edit"/></td>-->
+        <!-- List Person done -->
 
-                  
+        <!-- CREATE PERSON FORM  -->
+            <h3>Create Person</h3>
+            <p>Form</p>
+           
+                    <h3>Formular</h3>
+                    <form>
+                        <!-- create first name and last name-->
+                        <h5>First name and last name</h5>
+                        <div class="mb-3 input-group">
+                          <input id="firstName" placeholder="First Name" type="text" aria-label="First name" class="form-control">
+                          <input id="lastName" placeholder= "Last Name" type="text" aria-label="Last name" class="form-control">
+                          
+                        </div>
+                        <!-- create email-->
+                        <h5>Email</h5>
+                        <div class="mb-3">
+                          <input id="email" placeholder= "Email" class="form-control" >
+                        </div>
 
-                    <div id="editModal" class="modal" tabindex="-1">
+                          <!-- create description and number-->
+                          <h5>Address</h5>
+                        <div class="mb-3 input-group">
+                            <input id="description" placeholder="Zipcode" type="text" aria-label="First name" class="form-control">
+                            <input id="zipcode" placeholder= "Street" type="text" aria-label="Last name" class="form-control">
+                          </div>
+
+                        <!-- create description and number-->
+                        <h5>Phones</h5>
+                        <div class="mb-3 input-group">
+                            <input id="description" placeholder="Description" type="text" aria-label="First name" class="form-control">
+                            <input id="number" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
+                          </div>
+                          <div class="mb-3 input-group">
+                            <input id="description" placeholder="Description" type="text" aria-label="First name" class="form-control">
+                            <input id="number" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
+                          </div>
+                          <div class="mb-3 input-group">
+                            <input id="description" placeholder="Description" type="text" aria-label="First name" class="form-control">
+                            <input id="number" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
+                          </div>
+
+                    
+
+                          <h5>Hobbies</h5>
+                        <!-- create hobby name and category-->
+                            <div class="form-floating input-group mb-3">
+                              <select class="form-select" id="select-name" aria-label="Floating label select example">
+                                <option selected>Chose hobby</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                              </select>
+                            
+                              
+                              <select class="form-select" id="select-category" aria-label="Floating label select example">
+                                <option selected>Choose category</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                              </select>
+                            </div>
+
+                            
+
+                               <!-- create type and wikiLink-->
+                            <div class="form-floating input-group mb-3">
+                              <select class="form-select" id="select-type" aria-label="Floating label select example">
+                                <option selected>Chose type</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                              </select>
+                            
+                              
+                              <select class="form-select" id="select-wikiLink" aria-label="Floating label select example">
+                                <option selected>Choose wiki Link</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                              </select>
+                            </div>
+
+
+                            <h5>Hobbies</h5>
+                            <!-- create hobby name and category2-->
+                                <div class="form-floating input-group mb-3">
+                                  <select class="form-select" id="select-name2" aria-label="Floating label select example">
+                                    <option selected>Chose hobby</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                  </select>
+                                
+                                  
+                                  <select class="form-select" id="select-category2" aria-label="Floating label select example">
+                                    <option selected>Choose category</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                  </select>
+                                </div>
+
+                                   <!-- create type and wikiLink2-->
+                            <div class="form-floating input-group mb-3">
+                                <select class="form-select" id="select-type2" aria-label="Floating label select example">
+                                  <option selected>Chose type</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                              
+                                
+                                <select class="form-select" id="select-wikiLink2" aria-label="Floating label select example">
+                                  <option selected>Choose wiki Link</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                              </div>
+                            <!--- create button person -->
+                        <button id="createNewPerson" type="submit" class="btn btn-primary">Create Person</button>
+                      </form>
+
+                      
+
+                    <div id="edit-modal" class="modal" tabindex="-1">
                         <div class="modal-dialog">
-                          <div class="modal-content">
+                        <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title">Edit person</h5>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h5 class="modal-title">Edit person</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                              <p>Modal body text goes here.</p>
+                            <p>Modal body text goes here.</p>
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
-                          </div>
                         </div>
-                      </div>
+                        </div>
+                    </div>
                 </div>
-         
+        
         </div>
 
         <!-- End of HTML for exercise-1 -->
@@ -136,8 +263,9 @@
 
         <!--End of all content -->
     </div>
-    >
-<script type="module" src="main.js"></script>
+    
+<script type="module" src="main.js" ></script>
+
 
 </body>
 </html>

@@ -1,8 +1,12 @@
 import "./node_modules/bootstrap/dist/css/bootstrap.min.css"
 import * as bootstrap from 'bootstrap';
+
+window.bootstrap = bootstrap;
+
 import "./style.css";
 import "./personFacade";
 import personFacade from "./personFacade";
+
 document.getElementById("all-content").style.display = "block";
 
 /*
@@ -18,11 +22,19 @@ document.getElementById("all-content").style.display = "block";
 
 personFacade.getAllPersons(); // loads all users right away
 
-document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
+//document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
 //document.getElementById("getUserBtn").onclick = userFacade.getUser;
-//document.getElementById("addUserBtn").onclick = userFacade.addUser;
+//document.getElementById("createNewPersonBtn").onclick = personFacade.createNewPerson;
 
-//document.getElementById(`update-button-${person.id}`).onclick() = personFacade.updatePerson;
+//console.log(person.id, "main.js")
+//document.getElementById(`update-button-${person.id}`).onclick = personFacade.updatePerson(person);
+//document.getElementById(`update-button-${person.id}`).addEventListener("click", () => {
+ //             personFacade.updatePerson(person)});
+
+
+
+//document.getElementById("updatePersonInBackend(${person.id}").onclick = personFacade.updatePersonInBackend(personId);
+
 //document.getElementById("deleteUserBtn").onclick = userFacade.deleteUser;
 
 /*

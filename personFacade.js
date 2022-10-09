@@ -1,12 +1,25 @@
+
+
 const url = "https://acmverden.dk/tomcat/information/api/person/"
+
+
 
 const personsTableBody = document.getElementById("allPersonRows");
 console.log("here line 4 in PersonFacade js")
 
-const renderPhones = (phones) => {
 
+const renderPhones = (phones) => {
+    if (phones.length === 0) {
+        phones.phones = [
+                {
+                    description: "",
+                    number: ""
+                }
+            ]
+            }
     const descriptions = phones.map (phone => `${phone.description}<br>`)
     const numbers = phones.map (phone => `${phone.number}<br>`)
+    //console.log(descriptions);
     return `<td>${descriptions}</td>` +
      `<td>${numbers}</td>`
 }
@@ -24,6 +37,23 @@ const renderHobbies = (hobbies) => {
    ` <td>${types}</td> ` +
     `<td> ${wikiLinks}</td>` 
 }
+
+// const renderAddress = (address) => {
+//     if (address === undefined) {
+//                 address = {
+//                     street: "",
+//                     zipcode: ""
+//                 }
+//             }
+
+//     const street = address.map (address => `${address.street}<br>`)
+//     const  zipcode = address.map (address => `${address.zipcode}<br>`)
+
+//     return `
+//     <td>${street}</td>` +
+//     `<td>${zipcode}</td>` 
+    
+// }
 
 // const renderPerson = (json) => {
 //     if (json.address === undefined) {
@@ -71,9 +101,12 @@ const renderHobbies = (hobbies) => {
     
 // }
 
-//<td> <input id="editPersonBtn" type="button" value="Edit"/></td>
 
+// let editModalElement = document.getElementById("edit-modal")
+// let editModal = new bootstrap.Modal(editModalElement)
+// document.getElementById("editPersonBtn").addEventListener('click', e => editModal.toggle())
 
+/* ---------------------------------------------- UPDATE START ----------------------------------------------- */
 function getAllPersons() {
     //let allPersonRow = document.getElementById("allPersonRows")
 
@@ -82,6 +115,7 @@ function getAllPersons() {
         .then(persons => {
             console.log("here i fetch all persons and secondly my innerHTML appendChild() knows who the father is. so it map persons(data)")
             //allPersonRow.innerHTML = persons.map((person) => renderPerson(person)).join("\n")
+            console.log(persons)
             persons.map(createPersonsTableRow);
           
         })
@@ -95,12 +129,37 @@ function createPersonsTableRow(person) {
     console.log(personTableRow);
     personsTableBody.appendChild(personTableRow);
     
-
-    makePersonTableRow(personTableRow, person);
+    makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person);
 }
 
-function makePersonTableRow(personTableRow, person) {
+function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) {
     console.log("Making my table og paremeterne personTableRow bruges til innerhtml med den tr id den har og person id til den tr id")
+    if (person.address === undefined) {
+                person.address = {
+                    street: "",
+                    zipcode: ""
+                }
+            }
+            
+    if (person.phones.length === 0) {
+        person.phones = [
+        {
+            description: "",
+            number: ""
+        }
+    ]
+    }
+
+    if (person.hobbies.length === 0) {
+        person.hobbies = [
+        {
+            name: "",
+            category: "",
+            type: "",
+            wikiLink: ""
+        }
+    ]
+    }
     personTableRow.innerHTML = `
             
             <td>
@@ -119,16 +178,16 @@ function makePersonTableRow(personTableRow, person) {
                 ${(person.email)}
             </td>
 
-            
                 ${(renderPhones(person.phones))}
             
             
              <td>
-                ${(person.street)}
+    
+                ${(person.address.street)}
             </td>
             
              <td>
-                ${(person.zipcode)}
+                ${(person.address.zipcode)}
             </td>
 
              
@@ -136,109 +195,213 @@ function makePersonTableRow(personTableRow, person) {
             
 
             <td>
-                <button id="update-button-${person.id}">update button</button>            
+            
+                <button class="btn btn-primary" id="update-button-${person.id}">update</button>            
             </td>  
 
              <td>
-                <button onclick="deletePerson(${person.id})">❌</type=button>            
+                <button class="btn btn-outline-danger" onclick="deletePerson(${person.id})">❌</type=button>            
             </td>        
             
         `;
 
         //  <p >${(renderHobbies(person.hobbies))}</p>  der stod json.hobbies før og det forstod den ikke
 
-
-    // document.getElementById(`update-button-${person.id}`)
-    //     .addEventListener("click", () => {
-    //         updatePerson(person)});
+        
+     document.getElementById(`update-button-${person.id}`)
+        .addEventListener("click", () => {
+              updatePerson(person)});
 
 
 }
-
-
 
 
 function updatePerson(person) {
     const tableRowToUpdate = document.getElementById(person.id);
 
-    tableRowToUpdate.innerHTML = `
-    <td>
+    tableRowToUpdate.innerHTML =  `
+    <td>      
             <input id="update-person-id-${person.id}" type=hidden value="${(person.id)}">
-        </td>
+      
+        
         <td>
             <input id="update-person-firstName-${person.id}" value="${(person.firstName)}">
         </td>
+
         <td>
             <input id="update-person-lastName-${person.id}" value="${(person.lastName)}">
         </td>
        <td>
-            <input id="update-person-mail-${person.id}" value="${(person.email)}">
+            <input id="update-person-email-${person.id}" value="${(person.email)}">
        </td>
+       
+       <td> 
+       ${insertAllInputWhileEditing(person.phones, "update-person",person.id, "phone", "description")}  
+       </td> 
+        
+
+        
+        <td> 
+            ${insertAllInputWhileEditing(person.phones, "update-person", person.id, "phone", "number")}  
+        </td> 
+       
+
+       
+        <td>
+            <input id="update-person-street-${person.id}" value="${(person.address.street)}">
+       </td>
+
        <td>
-            <input id="update-person-description-${person.id}"  value="${(person.description)}">
+            <input id="update-person-zipcode-${person.id}" value="${(person.address.zipcode)}">
        </td>
-        <td>
-            <input id="update-person-number-${person.id}" value="${(person.number)}">
+        
+       <td> 
+       
+       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "id", "hidden")}  
+       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "name")}  
        </td>
-        <td>
-            <input id="update-person-name-${person.id}" value="${(person.name)}">
+       <td> 
+       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "category")}  
        </td>
-        <td>
-            <input id="update-person-category-${person.id}"  value="${(person.category)}">
+       <td> 
+       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "type")}  
        </td>
-        <td>
-            <input id="update-person-type-${person.id}"  value="${(person.type)}">
+       <td> 
+       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby","wikiLink")}  
+
        </td>
-        <td>
-            <input id="update-person-wikiLink-${person.id}"  value="${(person.wikiLink)}">
-       </td>
-       <td>
-           
-            <button onclick="updatePersonInBackend(${person.id})">✅</button>
+            
+            <button class="btn btn-success" id="updatePersonInBackend">Save</button>
        </td>
      
     `;
 
+    document.getElementById("updatePersonInBackend").onclick = () => updatePersonInBackend(person);
+
 }
 
-function updatePersonInBackend(personId) {
+//hobby havde en id men den skal vi hidden derfor type="text"
+function insertAllInputWhileEditing (entities,action, personId, entityName, property, type="text") {
+    //map bruger man til at lave nyt array
+    return entities.map((entity, index) => `<input id="${action}-${personId}-${entityName}-${index}-${property}" type=${type} value=${entity[property]}> `).join("")
+    
+}
 
-    const tableRowToUpdate = document.getElementById(personId);
+function insertAllInputInBackend (entities,action, personId, entityName) {
+    return entities.map((entity, index) => { //laver anonym function
+
+        //enkelte entity og looper igennem alle mine properties. forEach bruger man til at gøre noget igen og igen
+        Object.entries(entity).forEach(property => { 
+          //property name og entity navn
+          //entity er vores phone object og property 0 er både vores phone og description
+        
+        //   console.log(document.getElementById(`${action}-${personId}-${entityName}-${index}-${property[0]}`))
+        //   console.log(`${action}-${personId}-${entityName}-${index}-${property[0]}`)
+          ////hobby havde en id men den skal vi hidden derfor type="text"
+           entity[property[0]] = document.getElementById(`${action}-${personId}-${entityName}-${index}-${property[0]}`).value
+            
+        })
+          return entity
+    })
+    
+}
+
+function updatePersonInBackend(person) {
+
+    const tableRowToUpdate = document.getElementById(person.id);
 
     const personToUpdate = {
-        id: personId,
-        firstName: document.getElementById(`update-person-firstName-${personId}`).value,
-        lastName: document.getElementById(`update-person-lastName-${personId}`).value,
-        email: document.getElementById(`update-person-email-${personId}`).value,
-        description: document.getElementById(`update-person-description-${personId}`).value,
-        number: document.getElementById(`update-person-number-${personId}`).value,
-        name: document.getElementById(`update-person-name-${personId}`).value,
-        category: document.getElementById(`update-person-category-${personId}`).value,
-        type: document.getElementById(`update-person-type-${personId}`).value,
-        wikiLink: document.getElementById(`update-person-wikiLink-${personId}`).value
-    };
+        
+        id: person.id,
+        firstName: document.getElementById(`update-person-firstName-${person.id}`).value,
+        lastName: document.getElementById(`update-person-lastName-${person.id}`).value,
+        email: document.getElementById(`update-person-email-${person.id}`).value,
+        
+        adddres: {
+            street: document.getElementById(`update-person-street-${person.id}`).value,
+            zipcode: document.getElementById(`update-person-zipcode-${person.id}`).value,
+        },
 
-    fetch(url + personId, {
+        phones: insertAllInputInBackend(person.phones, "update-person",person.id, "phone"),
+                
+        hobbies: insertAllInputInBackend(person.hobbies, "update-person", person.id, "hobby")
+        
+    }
+    console.log(personToUpdate)
+    
+    fetch(url, {
         method: "PUT",
         headers: {"Content-type": "application/json; charset=UTF-8"},
         body: JSON.stringify(personToUpdate)
-    }).then(response => {
+    }).then(response => response.json)
+       .then(response => {
+        console.log(response.message)
         if (response.status === 200) {
-            makePersonTableRow(tableRowToUpdate, personToUpdate);
-        }
+            makePersonTableRowAfterFetchingDataIsSucceeded(tableRowToUpdate, personToUpdate);
+        } 
     });
 }
 
 
 
+{/* <td> ` 
+            console.log(person.phones)
+            person.phones.forEach ( phone => {
+            tableRowToUpdate.innerHTML +=` <input id="update-person-description-${person.id}"  value="${(phone.description)}"> `
+            })
+        
+
+            tableRowToUpdate.innerHTML += `</td> 
+        
+
+        
+        <td> `
+              person.phones.forEach ( phone => {
+                tableRowToUpdate.innerHTML += `<input id="update-person-number-${person.id}" value="${(phone.number)}"> `
+              })
+
+             tableRowToUpdate.innerHTML += `</td>  */}
+/* ---------------------------------------------- UPDATE SLUT ----------------------------------------------- */
+
+/* ---------------------------------------------- CREATE START ----------------------------------------------- */
+
+function createNewPerson() {
+    const newPerson = {
+     firstName: document.getElementById("firstName").value,
+     lastName: document.getElementById("lastName").value,
+     email: document.getElementById("email").value,
+     adddres: {
+        street: document.getElementById(`update-person-street-${person.id}`).value,
+        zipcode: document.getElementById(`update-person-zipcode-${person.id}`).value,
+    },
+    
+     description: document.getElementById("description").value,
+     number: document.getElementById("number").value,
+     name: document.getElementById("select-name").value,
+     category: document.getElementById("select-category").value
+     //number: document.getElementById("number").value
+     //number: document.getElementById("number").value
+    }
 
 
+    fetch(url, {
+        method: "POST",
+        headers: {"Content-type": "application/json; charset=UTF-8"},
+        body: JSON.stringify(newPerson)
+
+    }).then(response=> console.log("im here"))
+        .catch(error => console.log("Network related error:", error))
+}
 
 
 const personFacade = {
     getAllPersons,
-   // getUser,
-    //updatePersonInBackend,
+    updatePerson,
+    makePersonTableRowAfterFetchingDataIsSucceeded,
+    createPersonsTableRow,
+    updatePersonInBackend,
+    createNewPerson
+
     //editUser,
     //deleteUser
 }

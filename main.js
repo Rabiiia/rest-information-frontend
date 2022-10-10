@@ -24,7 +24,9 @@ personFacade.getAllPersons(); // loads all users right away
 
 //document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
 //document.getElementById("getUserBtn").onclick = userFacade.getUser;
-//document.getElementById("createNewPersonBtn").onclick = personFacade.createNewPerson;
+console.log("createbutton?")
+document.getElementById("createNewPersonBtn").onclick = personFacade.createNewPersonInBackend;
+
 
 //console.log(person.id, "main.js")
 //document.getElementById(`update-button-${person.id}`).onclick = personFacade.updatePerson(person);

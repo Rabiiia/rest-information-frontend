@@ -29,8 +29,8 @@
                             <th>firstName</th>
                             <th>lastName</th>
                             <th>email</th>
-                            <th>description</th>
                             <th>number</th>
+                            <th>description</th>
                             <th>street</th>
                             <th>zipcode</th>
                             <th>Name</th>
@@ -50,13 +50,15 @@
                     </table>
                    <!----<td> <input id="editPersonBtn" type="button" value="Edit"/></td>-->
         <!-- List Person done -->
+        <br>
+        <br>
 
         <!-- CREATE PERSON FORM  -->
             <h3>Create Person</h3>
             <p>Form</p>
            
                     <h3>Formular</h3>
-                    <form>
+                    
                         <!-- create first name and last name-->
                         <h5>First name and last name</h5>
                         <div class="mb-3 input-group">
@@ -73,23 +75,23 @@
                           <!-- create description and number-->
                           <h5>Address</h5>
                         <div class="mb-3 input-group">
-                            <input id="description" placeholder="Zipcode" type="text" aria-label="First name" class="form-control">
-                            <input id="zipcode" placeholder= "Street" type="text" aria-label="Last name" class="form-control">
+                            <input id="street" placeholder="street" type="text" aria-label="First name" class="form-control">
+                            <input id="zipcode" placeholder= "zipcode" type="text" aria-label="Last name" class="form-control">
                           </div>
 
-                        <!-- create description and number-->
+                        <!-- create description and number 3 stykker-->
                         <h5>Phones</h5>
                         <div class="mb-3 input-group">
                             <input id="description" placeholder="Description" type="text" aria-label="First name" class="form-control">
                             <input id="number" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
                           </div>
                           <div class="mb-3 input-group">
-                            <input id="description" placeholder="Description" type="text" aria-label="First name" class="form-control">
-                            <input id="number" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
+                            <input id="description2" placeholder="Description" type="text" aria-label="First name" class="form-control">
+                            <input id="number2" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
                           </div>
                           <div class="mb-3 input-group">
-                            <input id="description" placeholder="Description" type="text" aria-label="First name" class="form-control">
-                            <input id="number" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
+                            <input id="description3" placeholder="Description" type="text" aria-label="First name" class="form-control">
+                            <input id="number3" placeholder= "Number" type="text" aria-label="Last name" class="form-control">
                           </div>
 
                     
@@ -97,82 +99,31 @@
                           <h5>Hobbies</h5>
                         <!-- create hobby name and category-->
                             <div class="form-floating input-group mb-3">
-                              <select class="form-select" id="select-name" aria-label="Floating label select example">
+                              <select class="form-select" id="status-dropdown-name" aria-label="Floating label select example">
                                 <option selected>Chose hobby</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
+                                <option >Skuespil</option>
+                                <option >Two</option>
+                                <option >Three</option>
                               </select>
                             
                               
-                              <select class="form-select" id="select-category" aria-label="Floating label select example">
-                                <option selected>Choose category</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                              </select>
-                            </div>
 
-                            
-
-                               <!-- create type and wikiLink-->
-                            <div class="form-floating input-group mb-3">
-                              <select class="form-select" id="select-type" aria-label="Floating label select example">
-                                <option selected>Chose type</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                              </select>
-                            
-                              
-                              <select class="form-select" id="select-wikiLink" aria-label="Floating label select example">
-                                <option selected>Choose wiki Link</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                              </select>
-                            </div>
-
-
-                            <h5>Hobbies</h5>
-                            <!-- create hobby name and category2-->
+                       
+                            <!-- create hobby name -->
                                 <div class="form-floating input-group mb-3">
-                                  <select class="form-select" id="select-name2" aria-label="Floating label select example">
+                                  <select class="form-select" id="status-dropdown-name2" aria-label="Floating label select example">
                                     <option selected>Chose hobby</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                  </select>
-                                
-                                  
-                                  <select class="form-select" id="select-category2" aria-label="Floating label select example">
-                                    <option selected>Choose category</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option >One</option>
+                                    <option >Two</option>
+                                    <option >Three</option>
                                   </select>
                                 </div>
 
-                                   <!-- create type and wikiLink2-->
-                            <div class="form-floating input-group mb-3">
-                                <select class="form-select" id="select-type2" aria-label="Floating label select example">
-                                  <option selected>Chose type</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select>
-                              
-                                
-                                <select class="form-select" id="select-wikiLink2" aria-label="Floating label select example">
-                                  <option selected>Choose wiki Link</option>
-                                  <option value="1">One</option>
-                                  <option value="2">Two</option>
-                                  <option value="3">Three</option>
-                                </select>
+                               
                               </div>
                             <!--- create button person -->
-                        <button id="createNewPerson" type="submit" class="btn btn-primary">Create Person</button>
-                      </form>
+                        <button id="createNewPersonBtn"  class="btn btn-primary">Create Person</button>
+                      
 
                       
 

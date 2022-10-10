@@ -2,9 +2,9 @@
 
 const url = "https://acmverden.dk/tomcat/information/api/person/"
 
-
-
 const personsTableBody = document.getElementById("allPersonRows");
+let hobbies;
+let filteredHobbies;
 console.log("here line 4 in PersonFacade js")
 
 
@@ -156,7 +156,7 @@ function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) 
             name: "",
             category: "",
             type: "",
-            wikiLink: ""
+           wikiLink: ""
         }
     ]
     }
@@ -200,7 +200,7 @@ function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) 
             </td>  
 
              <td>
-                <button class="btn btn-outline-danger" onclick="deletePerson(${person.id})">❌</type=button>            
+                <button class="btn btn-outline-danger" onclick=deleteAddressInBackend(${person.id})">❌</type=button>            
             </td>        
             
         `;
@@ -218,7 +218,11 @@ function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) 
 
 function updatePerson(person) {
     const tableRowToUpdate = document.getElementById(person.id);
-
+     person.hobbies.forEach (hobby => {
+        delete hobby.category
+        delete hobby.type
+        delete hobby.wikiLink
+     })
     tableRowToUpdate.innerHTML =  `
     <td>      
             <input id="update-person-id-${person.id}" type=hidden value="${(person.id)}">
@@ -235,15 +239,14 @@ function updatePerson(person) {
             <input id="update-person-email-${person.id}" value="${(person.email)}">
        </td>
        
-       <td> 
-       ${insertAllInputWhileEditing(person.phones, "update-person",person.id, "phone", "description")}  
-       </td> 
-        
-
         
         <td> 
             ${insertAllInputWhileEditing(person.phones, "update-person", person.id, "phone", "number")}  
         </td> 
+
+        <td> 
+       ${insertAllInputWhileEditing(person.phones, "update-person",person.id, "phone", "description")}  
+       </td> 
        
 
        
@@ -256,25 +259,16 @@ function updatePerson(person) {
        </td>
         
        <td> 
-       
-       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "id", "hidden")}  
        ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "name")}  
        </td>
-       <td> 
-       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "category")}  
-       </td>
-       <td> 
-       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby", "type")}  
-       </td>
-       <td> 
-       ${insertAllInputWhileEditing(person.hobbies, "update-person", person.id, "hobby","wikiLink")}  
+     
 
-       </td>
+       <td>
             
             <button class="btn btn-success" id="updatePersonInBackend">Save</button>
        </td>
      
-    `;
+    `; 
 
     document.getElementById("updatePersonInBackend").onclick = () => updatePersonInBackend(person);
 
@@ -295,8 +289,6 @@ function insertAllInputInBackend (entities,action, personId, entityName) {
           //property name og entity navn
           //entity er vores phone object og property 0 er både vores phone og description
         
-        //   console.log(document.getElementById(`${action}-${personId}-${entityName}-${index}-${property[0]}`))
-        //   console.log(`${action}-${personId}-${entityName}-${index}-${property[0]}`)
           ////hobby havde en id men den skal vi hidden derfor type="text"
            entity[property[0]] = document.getElementById(`${action}-${personId}-${entityName}-${index}-${property[0]}`).value
             
@@ -309,38 +301,44 @@ function insertAllInputInBackend (entities,action, personId, entityName) {
 function updatePersonInBackend(person) {
 
     const tableRowToUpdate = document.getElementById(person.id);
-
     const personToUpdate = {
         
         id: person.id,
         firstName: document.getElementById(`update-person-firstName-${person.id}`).value,
         lastName: document.getElementById(`update-person-lastName-${person.id}`).value,
         email: document.getElementById(`update-person-email-${person.id}`).value,
+
+        phones: insertAllInputInBackend(person.phones, "update-person",person.id, "phone"),
         
-        adddres: {
+        address: {
             street: document.getElementById(`update-person-street-${person.id}`).value,
             zipcode: document.getElementById(`update-person-zipcode-${person.id}`).value,
         },
 
-        phones: insertAllInputInBackend(person.phones, "update-person",person.id, "phone"),
+
                 
         hobbies: insertAllInputInBackend(person.hobbies, "update-person", person.id, "hobby")
         
     }
-    console.log(personToUpdate)
+  
+
     
     fetch(url, {
         method: "PUT",
-        headers: {"Content-type": "application/json; charset=UTF-8"},
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify(personToUpdate)
-    }).then(response => response.json)
-       .then(response => {
-        console.log(response.message)
-        if (response.status === 200) {
+    }).then(response => response.json())
+        .then(response => {
+        console.log(response)
+        if (response.code === 200) {
             makePersonTableRowAfterFetchingDataIsSucceeded(tableRowToUpdate, personToUpdate);
         } 
     });
 }
+    
+
 
 
 
@@ -365,45 +363,102 @@ function updatePersonInBackend(person) {
 
 /* ---------------------------------------------- CREATE START ----------------------------------------------- */
 
-function createNewPerson() {
+function createNewPersonInBackend() {
     const newPerson = {
      firstName: document.getElementById("firstName").value,
      lastName: document.getElementById("lastName").value,
      email: document.getElementById("email").value,
-     adddres: {
-        street: document.getElementById(`update-person-street-${person.id}`).value,
-        zipcode: document.getElementById(`update-person-zipcode-${person.id}`).value,
-    },
-    
-     description: document.getElementById("description").value,
-     number: document.getElementById("number").value,
-     name: document.getElementById("select-name").value,
-     category: document.getElementById("select-category").value
-     //number: document.getElementById("number").value
-     //number: document.getElementById("number").value
+     
+     address: {
+        street: document.getElementById("street").value,
+        zipcode: document.getElementById("zipcode").value,
+     },
+
+    phones:[
+        {    
+            number: document.getElementById("number").value,    
+            description: document.getElementById("description").value,
+        },
+        {    
+            number: document.getElementById("number2").value,    
+            description: document.getElementById("description2").value,
+        },
+        {    
+            number: document.getElementById("number3").value,    
+            description: document.getElementById("description3").value,
+        }
+    ] ,
+    hobbies: [
+        {
+            name: document.getElementById("status-dropdown-name").value,
+        }
+    ]
+     
     }
+    //console.log(JSON.stringify(newPerson))
 
 
     fetch(url, {
         method: "POST",
-        headers: {"Content-type": "application/json; charset=UTF-8"},
+        headers: {"Content-Type": "application/json; charset=UTF-8"},
         body: JSON.stringify(newPerson)
 
-    }).then(response=> console.log("im here"))
+    }).then(response=> response.json())
         .catch(error => console.log("Network related error:", error))
+}
+
+// function createHobby(hobby) {
+//     const hobbyElement = document.createElement("div");
+//     championElement.innerHTML = `
+//         <p>hobby name: ${(hobby.name)}</p> 
+//         <p>${(hobby.category)}</p>
+//         <p>${(hobby.type)}</p>
+//         <p>${(hobby.wikiLink)}</p>
+           
+  
+//     `;
+//     personsTableBody.appendChild(hobbyElement);
+// }
+
+// function searchHobby() {
+//     const selectedStatus = document.getElementById("status-dropdown-name").value;
+//     personsTableBody.innerHTML = "";
+
+//     if (selectedStatus === "All") {
+//         filteredHobbies = hobbies;
+//         hobbies.map(createHobby);
+//     } else {
+//         filteredHobbies = hobbies.filter(hobby => hobby.name === selectedStatus);
+//         filteredHobbies.map(createHobby);
+//     }
+// }
+
+//document.getElementById("search").addEventListener("click", searchHobby);
+
+/* ---------------------------------------------- CREATE SLUT ----------------------------------------------- */
+
+/* ---------------------------------------------- DELETE START ----------------------------------------------- */
+
+function deleteAddressInBackend(personId) {
+
+    //id: document.getElementById("delete-button-").value;
+
+    fetch(url + personId + "/address", {
+        method: "DELETE"
+    }).then(response => {
+        if (response.status === 200) {
+            document.getElementById(personId).remove();
+        } else {
+            console.log(response.status);
+        }
+    });
 }
 
 
 const personFacade = {
     getAllPersons,
-    updatePerson,
-    makePersonTableRowAfterFetchingDataIsSucceeded,
-    createPersonsTableRow,
-    updatePersonInBackend,
-    createNewPerson
-
-    //editUser,
-    //deleteUser
+    createNewPersonInBackend,
+    deleteAddressInBackend
 }
 
 export default personFacade

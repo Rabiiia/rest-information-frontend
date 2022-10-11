@@ -1,6 +1,7 @@
 
 
-const url = "https://acmverden.dk/tomcat/information/api/person/"
+const personUrl = "https://acmverden.dk/tomcat/information/api/person/"
+const hobbyUrl = "https://acmverden.dk/tomcat/information/api/hobby/"
 
 const personsTableBody = document.getElementById("allPersonRows");
 let hobbies;
@@ -24,7 +25,7 @@ const renderPhones = (phones) => {
      `<td>${numbers}</td>`
 }
 
-const renderHobbies = (hobbies) => {
+const renderHobbies = (hobbies, personId) => {
 
     const names = hobbies.map (hobby => `${hobby.name}<br>`)
     const  categories = hobbies.map (hobby => `${hobby.category}<br>`)
@@ -32,10 +33,10 @@ const renderHobbies = (hobbies) => {
     const  wikiLinks = hobbies.map (hobby => `${hobby.wikiLink}<br>`)
 
     return `
-    <td>${names}</td>` +
-    `<td>${categories}</td>` +
-   ` <td>${types}</td> ` +
-    `<td> ${wikiLinks}</td>` 
+    <td id="name-${personId}">${names}</td>` +
+    `<td id="category-${personId}">${categories}</td>` +
+   ` <td id="type-${personId}">${types}</td> ` +
+    `<td id="wikiLink-${personId}"> ${wikiLinks}</td>` 
 }
 
 // const renderAddress = (address) => {
@@ -110,12 +111,13 @@ const renderHobbies = (hobbies) => {
 function getAllPersons() {
     //let allPersonRow = document.getElementById("allPersonRows")
 
-    fetch(url)
+    fetch(personUrl)
         .then(res => res.json())
         .then(persons => {
             console.log("here i fetch all persons and secondly my innerHTML appendChild() knows who the father is. so it map persons(data)")
             //allPersonRow.innerHTML = persons.map((person) => renderPerson(person)).join("\n")
             console.log(persons)
+            personsTableBody.innerHTML="";
             persons.map(createPersonsTableRow);
           
         })
@@ -133,6 +135,7 @@ function createPersonsTableRow(person) {
 }
 
 function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) {
+    console.log(person)
     console.log("Making my table og paremeterne personTableRow bruges til innerhtml med den tr id den har og person id til den tr id")
     if (person.address === undefined) {
                 person.address = {
@@ -181,17 +184,17 @@ function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) 
                 ${(renderPhones(person.phones))}
             
             
-             <td>
+             <td id="street-${person.id}">
     
                 ${(person.address.street)}
             </td>
             
-             <td>
+             <td id="zipcode-${person.id}">
                 ${(person.address.zipcode)}
             </td>
 
              
-                ${(renderHobbies(person.hobbies))}
+                ${(renderHobbies(person.hobbies,person.id))}
             
 
             <td>
@@ -200,7 +203,7 @@ function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) 
             </td>  
 
              <td>
-                <button class="btn btn-outline-danger" onclick=deleteAddressInBackend(${person.id})">❌</type=button>            
+                <button class="btn btn-outline-danger" id="deleteAddressInBackend-${person.id}">❌</type=button>            
             </td>        
             
         `;
@@ -212,13 +215,16 @@ function makePersonTableRowAfterFetchingDataIsSucceeded(personTableRow, person) 
         .addEventListener("click", () => {
               updatePerson(person)});
 
+        document.getElementById(`deleteAddressInBackend-${person.id}`).onclick = () => deleteAddressInBackend(person.id);
+
 
 }
 
 
 function updatePerson(person) {
     const tableRowToUpdate = document.getElementById(person.id);
-     person.hobbies.forEach (hobby => {
+    person.hobbies.forEach (hobby => {
+        delete hobby.id
         delete hobby.category
         delete hobby.type
         delete hobby.wikiLink
@@ -241,11 +247,11 @@ function updatePerson(person) {
        
         
         <td> 
-            ${insertAllInputWhileEditing(person.phones, "update-person", person.id, "phone", "number")}  
+            ${insertAllInputWhileEditing(person.phones, "update-person", person.id, "phone", "description")}  
         </td> 
 
         <td> 
-       ${insertAllInputWhileEditing(person.phones, "update-person",person.id, "phone", "description")}  
+       ${insertAllInputWhileEditing(person.phones, "update-person",person.id, "phone", "number")}  
        </td> 
        
 
@@ -286,6 +292,7 @@ function insertAllInputInBackend (entities,action, personId, entityName) {
 
         //enkelte entity og looper igennem alle mine properties. forEach bruger man til at gøre noget igen og igen
         Object.entries(entity).forEach(property => { 
+            console.log(property)
           //property name og entity navn
           //entity er vores phone object og property 0 er både vores phone og description
         
@@ -301,6 +308,7 @@ function insertAllInputInBackend (entities,action, personId, entityName) {
 function updatePersonInBackend(person) {
 
     const tableRowToUpdate = document.getElementById(person.id);
+
     const personToUpdate = {
         
         id: person.id,
@@ -323,7 +331,7 @@ function updatePersonInBackend(person) {
   
 
     
-    fetch(url, {
+    fetch(personUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -334,8 +342,22 @@ function updatePersonInBackend(person) {
         console.log(response)
         if (response.code === 200) {
             makePersonTableRowAfterFetchingDataIsSucceeded(tableRowToUpdate, personToUpdate);
-        } 
-    });
+            person.hobbies.forEach(hobby => {
+                fetch(hobbyUrl + hobby.name)
+                .then(res => res.json())
+                .then(hobby => {
+                    personToUpdate.hobbies.push(hobby) 
+                    console.log(tableRowToUpdate)
+                    document.getElementById(`name-${person.id}`).innerHTML = hobby.name
+    
+                    document.getElementById(`category-${person.id}`).innerHTML = hobby.category
+                    document.getElementById(`type-${person.id}`).innerHTML = hobby.type
+                    document.getElementById(`wikiLink-${person.id}`).innerHTML = hobby.wikiLink
+                })
+            })
+        }
+             
+        })
 }
     
 
@@ -398,7 +420,7 @@ function createNewPersonInBackend() {
     //console.log(JSON.stringify(newPerson))
 
 
-    fetch(url, {
+    fetch(personUrl, {
         method: "POST",
         headers: {"Content-Type": "application/json; charset=UTF-8"},
         body: JSON.stringify(newPerson)
@@ -440,14 +462,16 @@ function createNewPersonInBackend() {
 /* ---------------------------------------------- DELETE START ----------------------------------------------- */
 
 function deleteAddressInBackend(personId) {
+    
 
     //id: document.getElementById("delete-button-").value;
 
-    fetch(url + personId + "/address", {
+    fetch(personUrl + personId + "/address", {
         method: "DELETE"
     }).then(response => {
         if (response.status === 200) {
-            document.getElementById(personId).remove();
+            document.getElementById(`street-${personId}`).innerHTML ="",
+            document.getElementById(`zipcode-${personId}`).innerHTML=""
         } else {
             console.log(response.status);
         }

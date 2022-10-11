@@ -22,7 +22,7 @@ document.getElementById("all-content").style.display = "block";
 
 personFacade.getAllPersons(); // loads all users right away
 
-//document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
+document.getElementById("fetchPersonsBtn").onclick = personFacade.getAllPersons;
 //document.getElementById("getUserBtn").onclick = userFacade.getUser;
 console.log("createbutton?")
 document.getElementById("createNewPersonBtn").onclick = personFacade.createNewPersonInBackend;
